@@ -1,33 +1,138 @@
-DevOps Platform Provisioning PoCEz a projekt egy egyedi, lokális Kubernetes / OpenShift (CRC) környezetre tervezett Proof-of-Concept (PoC) platform. Egyetlen konfigurálható Helm chart segítségével indítja el a legnépszerűbb DevOps és CI/CD eszközöket egy közös névtérben.📂 Repository felépítéseA projekt könyvtárszerkezete a tiszta Helm-sablonozási elveket és a moduláris felépítést követi:Plaintextdevops-mastery-poc/
-├── devops-tools/                 # A közös Helm chart könyvtára
+# DevOps Platform Provisioning PoC
+
+Ez a projekt egy egyedi, lokális Kubernetes / OpenShift (CRC) környezetre tervezett **Proof-of-Concept (PoC)** platform.
+
+Egyetlen konfigurálható **Helm Chart** segítségével indítja el a legnépszerűbb DevOps és CI/CD eszközöket egy közös namespace-ben.
+
+---
+
+# 📂 Repository felépítése
+
+A projekt könyvtárszerkezete a tiszta Helm-sablonozási elveket és a moduláris felépítést követi.
+
+```text
+devops-mastery-poc/
+├── devops-tools/                 # Közös Helm Chart
 │   ├── Chart.yaml                # Chart metaadatok
-│   ├── values.yaml               # Globális és eszköz-szintű konfigurációk
+│   ├── values.yaml               # Globális és eszköz-specifikus konfiguráció
 │   ├── .helmignore
 │   └── templates/
 │       ├── _helpers.tpl          # Újrahasznosítható Helm sablonfüggvények
-│       ├── ingress.yaml          # Közös hálózati behatolási pont (Vanilla K8s)
-│       ├── argocd/               # ArgoCD erőforrások (Deployment, Service, RBAC)
-│       ├── grafana/              # Grafana vizualizációs szerver
-│       ├── jenkins/              # Jenkins CI automatizációs szerver
-│       └── kafka/                # Kafka üzenetsor (StatefulSet & Service)
-└── README.md                     # Rendszerdokumentáció és üzemeltetési útmutató
-🚀 Telepítési útmutató (Vanilla Kubernetes)Ha szabványos Kubernetes környezetben (pl. Minikube, k3d, Docker Desktop) telepítesz, a hálózati elérést a beépített ingress.yaml biztosítja.Bash# 1. Hozzuk létre a dedikált névteret
+│       ├── ingress.yaml          # Közös Ingress (Vanilla Kubernetes)
+│       ├── argocd/               # ArgoCD erőforrások
+│       ├── grafana/              # Grafana
+│       ├── jenkins/              # Jenkins
+│       └── kafka/                # Kafka (StatefulSet + Service)
+└── README.md                     # Dokumentáció
+```
+
+---
+
+# 🚀 Telepítési útmutató (Vanilla Kubernetes)
+
+Ha szabványos Kubernetes környezetben (pl. **Minikube**, **k3d**, **Docker Desktop**, **MicroK8s**) telepítesz, akkor a hálózati elérést a beépített `ingress.yaml` biztosítja.
+
+```bash
+# 1. Namespace létrehozása
 kubectl create namespace devops
 
-# 2. Dry-run / Template generálás ellenőrzése
+# 2. Helm sablonok ellenőrzése (Dry Run)
 helm template devops-deployment ./devops-tools --namespace devops
 
-# 3. Telepítés a klaszterre
+# 3. Telepítés
 helm install devops-deployment ./devops-tools --namespace devops
 
-# 4. Frissítés a values.yaml változása után
+# 4. Frissítés
 helm upgrade devops-deployment ./devops-tools --namespace devops
-🔴 OpenShift (CRC) specifikus beállításokOpenShift (CodeReady Containers) környezetben a natív hálózati elosztás nem az Ingress controlleren, hanem a beépített HAProxy Routeren (Route) keresztül valósul meg.1. Szolgáltatások publikálása (Route-ok létrehozása)Az alapértelmezett ClusterIP szolgáltatásokat az alábbi parancsokkal kell exponálni, hogy külső URL-t kapjanak:Bashoc expose service jenkins-service --name=jenkins --port=web -n devops
+```
+
+---
+
+# 🔴 OpenShift (CRC) specifikus beállítások
+
+OpenShift (CodeReady Containers) környezetben a szolgáltatások publikálása nem Ingress segítségével történik, hanem a beépített **HAProxy Router (Route)** használatával.
+
+## 1. Szolgáltatások publikálása (Route létrehozása)
+
+Az alapértelmezett `ClusterIP` szolgáltatásokat publikálni kell.
+
+```bash
+oc expose service jenkins-service --name=jenkins --port=web -n devops
 oc expose service grafana-service --name=grafana -n devops
 oc expose service kafka-service --name=kafka -n devops
-2. ArgoCD HTTPS / SSL probléma megoldásaAz ArgoCD belső architektúrája megköveteli a titkosított kapcsolatot. Mivel sima HTTP-n keresztül a Route Application is not available hibát adna vissza, az OpenShift routernek kell kezelnie a TLS terminációt az Edge protokoll segítségével:Bash# Töröljük az esetlegesen rosszul létrejött sima HTTP route-ot
+```
+
+---
+
+## 2. ArgoCD HTTPS / SSL probléma megoldása
+
+Az ArgoCD HTTPS kapcsolatot vár. Ha sima HTTP Route készül, akkor az alábbi hiba jelenik meg:
+
+> Application is not available
+
+A megoldás egy **Edge TLS** Route létrehozása.
+
+```bash
+# Hibás Route törlése
 oc delete route argocd -n devops
 
-# Létrehozzuk a biztonságos, Edge TLS-sel ellátott Route-ot
-oc create route edge argocd --service=argocd-server-service --port=8080 -n devops
-A sikeres futtatást követően az ArgoCD elérhetővé válik a biztonságos https://argocd-devops.apps-crc.testing címen.🛠️ Ismert korlátok és Fejlesztési Terv (Roadmap)A platform jelenleg egy stabil Proof-of-Concept fázisban van. A produkciós szintű használathoz az alábbi fejlesztések bevezetése szükséges:ModulProbléma / KihívásTervezett megoldás (To-Do)ArgoCDRBAC jogosultsági problémák a default Service Accounttal.Saját SA implementáció és dedikált RBAC szabályok finomhangolása.KafkaLokális fájlrendszer használata miatt a pod restart adatvesztéssel jár.StatefulSet átalakítása dynamic dynamic volume provisioning (PVC) alapú perzisztens tárolásra.TárhelyAz összes alkalmazás állapota elvész pod-rekreáció során.Persistent Volume (PV) és Persistent Volume Claim (PVC) bevezetése a Jenkins és a Grafana esetében is.KarbantarthatóságAz egyedi YAML-ek folyamatos karbantartást és frissítést igényelnek.A saját sablonok helyett Umbrella Chart struktúra használata, ahol a hivatalos upstream chartokat (ArtifactHub) subchartként húzzuk be dependencyként.🌿 Git Branch StratégiaA projekt jelenlegi verziókezelése az alábbi ágstruktúrát követi:main: Stabil, tesztelt állapot.develop: Folyamatos integrációs ág.feature/setup: Az alapvető infrastruktúra és eszközök konfigurálásáért felelős fejlesztői ág.
+# Edge TLS Route létrehozása
+oc create route edge argocd \
+  --service=argocd-server-service \
+  --port=8080 \
+  -n devops
+```
+
+Sikeres létrehozás után az ArgoCD elérhető lesz például:
+
+```
+https://argocd-devops.apps-crc.testing
+```
+
+---
+
+# 🛠️ Ismert korlátok és fejlesztési terv (Roadmap)
+
+A platform jelenleg stabil **Proof-of-Concept** állapotban van.
+
+A produkciós használathoz az alábbi fejlesztések szükségesek.
+
+| Modul | Probléma | Tervezett megoldás |
+|-------|----------|--------------------|
+| **ArgoCD** | RBAC jogosultsági problémák a default Service Account használata miatt | Saját Service Account és dedikált RBAC szabályok kialakítása |
+| **Kafka** | Lokális tárolás miatt pod újraindításkor adatvesztés történik | StatefulSet átalakítása PVC alapú perzisztens tárolásra |
+| **Storage** | Jenkins és Grafana állapota elveszik pod újraindítás után | Persistent Volume (PV) és Persistent Volume Claim (PVC) használata |
+| **Karbantarthatóság** | Egyedi YAML fájlok folyamatos karbantartást igényelnek | Umbrella Chart kialakítása hivatalos upstream Helm Chart dependency-k használatával |
+
+---
+
+# 🌿 Git Branch stratégia
+
+A projekt az alábbi Git branching modellt használja.
+
+| Branch | Leírás |
+|---------|--------|
+| **main** | Stabil, tesztelt kiadások |
+| **develop** | Folyamatos integrációs ág |
+| **feature/setup** | Az infrastruktúra és DevOps eszközök fejlesztése |
+
+---
+
+# 📦 Jelenleg támogatott komponensek
+
+- Jenkins
+- ArgoCD
+- Grafana
+- Kafka
+
+---
+
+# 🎯 Projekt célja
+
+A projekt célja egy könnyen telepíthető, lokális DevOps platform biztosítása, amely alkalmas:
+
+- CI/CD folyamatok kipróbálására
+- Kubernetes és Helm gyakorlására
+- GitOps megközelítés demonstrálására
+- OpenShift (CRC) kompatibilis környezet biztosítására
+- DevOps eszközök integrációjának bemutatására
