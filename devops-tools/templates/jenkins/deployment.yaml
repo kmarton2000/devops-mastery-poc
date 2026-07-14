@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins
+  namespace: {{ include "devops-suite.namespace" . }}
+spec:
+  replicas: {{ .Values.jenkins.replicaCount }}
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      containers:
+        - name: jenkins
+          image: {{ .Values.jenkins.image }}
+          ports:
+            - containerPort: 8080
+              name: web
+            - containerPort: 50000
+              name: agent

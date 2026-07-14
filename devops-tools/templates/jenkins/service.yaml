@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-service
+  namespace: {{ include "devops-suite.namespace" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.jenkins.servicePort }}
+      targetPort: 8080
+      name: web
+    - port: {{ .Values.jenkins.agentPort }}
+      targetPort: 50000
+      name: agent
+  selector:
+    app: jenkins

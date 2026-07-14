@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-server
+  namespace: {{ include "devops-suite.namespace" . }}
+spec:
+  replicas: {{ .Values.argocd.replicaCount }}
+  selector:
+    matchLabels:
+      app: argocd-server
+  template:
+    metadata:
+      labels:
+        app: argocd-server
+    spec:
+      containers:
+        - name: argocd-server
+          image: {{ .Values.argocd.image }}
+          command: 
+            - argocd-server
+          args:
+            - --insecure
+          ports:
+            - containerPort: 8080
+              name: web

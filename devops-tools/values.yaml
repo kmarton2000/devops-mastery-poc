@@ -1,0 +1,42 @@
+# Globális beállítások
+global:
+  namespace: devops
+
+persistence:
+  jenkins:
+    size: 5Gi
+  grafana:
+    size: 2Gi
+  kafka:
+    size: 5Gi
+
+# Ingress beállítások
+ingress:
+  enabled: true
+  className: "nginx"
+  host: "devops.local"
+
+# Jenkins konfiguráció
+jenkins:
+  replicaCount: 1
+  image: jenkins/jenkins:latest
+  servicePort: 8080
+  agentPort: 50000
+
+# Grafana konfiguráció
+grafana:
+  replicaCount: 1
+  image: grafana/grafana:latest
+  servicePort: 3000
+
+# ArgoCD konfiguráció (Szigorúan minimális single-pod verzió PoC-hoz)
+argocd:
+  replicaCount: 1
+  image: argoproj/argocd:v2.6.15
+  servicePort: 8080
+
+# Kafka konfiguráció (Egyszerűsített KRaft mód - nincs szükség külön Zookeeperre!)
+kafka:
+  replicaCount: 1
+  image: apache/kafka:latest
+  servicePort: 9092
