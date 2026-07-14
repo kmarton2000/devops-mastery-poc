@@ -29,12 +29,6 @@ grafana:
   image: grafana/grafana:latest
   servicePort: 3000
 
-# ArgoCD konfiguráció (Szigorúan minimális single-pod verzió PoC-hoz)
-argocd:
-  replicaCount: 1
-  image: argoproj/argocd:v2.6.15
-  servicePort: 8080
-
 # Kafka konfiguráció (Egyszerűsített KRaft mód - nincs szükség külön Zookeeperre!)
 kafka:
   replicaCount: 1

@@ -13,9 +13,18 @@ spec:
       labels:
         app: grafana
     spec:
+      securityContext:
+        fsGroup: 472
       containers:
         - name: grafana
           image: {{ .Values.grafana.image }}
           ports:
             - containerPort: 3000
               name: web
+          volumeMounts:
+            - name: grafana-storage-volume
+              mountPath: /var/lib/grafana
+      volumes:
+        - name: grafana-storage-volume
+          persistentVolumeClaim:
+            claimName: grafana-storage-pvc

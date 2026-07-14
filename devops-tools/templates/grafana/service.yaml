@@ -4,9 +4,10 @@ metadata:
   name: grafana-service
   namespace: {{ include "devops-suite.namespace" . }}
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: {{ .Values.grafana.servicePort }}
       targetPort: 3000
+      nodePort: 32300
   selector:
     app: grafana

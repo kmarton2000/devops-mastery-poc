@@ -37,13 +37,13 @@ Ha szabványos Kubernetes környezetben (pl. **Minikube**, **k3d**, **Docker Des
 kubectl create namespace devops
 
 # 2. Helm sablonok ellenőrzése (Dry Run)
-helm template devops-deployment ./devops-tools --namespace devops
+helm template devops-tools ./devops-tools --namespace devops
 
 # 3. Telepítés
-helm install devops-deployment ./devops-tools --namespace devops
+helm install devops-tools ./devops-tools --namespace devops
 
 # 4. Frissítés
-helm upgrade devops-deployment ./devops-tools --namespace devops
+helm upgrade devops-tools ./devops-tools --namespace devops
 ```
 
 ---
@@ -136,3 +136,18 @@ A projekt célja egy könnyen telepíthető, lokális DevOps platform biztosít�
 - GitOps megközelítés demonstrálására
 - OpenShift (CRC) kompatibilis környezet biztosítására
 - DevOps eszközök integrációjának bemutatására
+
+---
+
+ # To do
+
+Hátralévő teendők
+
+- Kafka se működik, nem indul el az alkalmazás
+- Volume-ozgatás
+- Már megírt Helm Chartok használata hogy ne kelljen minden alkalommal újrakonfigurálni mindent ha pl új környezetre tlepülnék ki, vagy elveszik a volume 
+
+Szépítgetések
+
+- ArgoCD nem a Helm Chart-al jön létre működik
+- Minden Service ClusterIP-t használ, csak a Grafana nem, ő NodePort-ot használ, amivel localhost:definiált port-on érhető el

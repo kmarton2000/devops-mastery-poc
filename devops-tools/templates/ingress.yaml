@@ -33,15 +33,6 @@ spec:
                 port:
                   number: {{ .Values.grafana.servicePort }}
 
-          # ArgoCD elérése: devops.local/argocd
-          - path: /argocd
-            pathType: Prefix
-            backend:
-              service:
-                name: argocd-server-service
-                port:
-                  number: {{ .Values.argocd.servicePort }}
-
           - path: /kafka
             pathType: Prefix
             backend:
