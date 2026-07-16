@@ -144,7 +144,6 @@ A projekt célja egy könnyen telepíthető, lokális DevOps platform biztosít�
 Hátralévő teendők
 
 - Kafka se működik, nem indul el az alkalmazás
-- Volume-ozgatás
 - Már megírt Helm Chartok használata hogy ne kelljen minden alkalommal újrakonfigurálni mindent ha pl új környezetre tlepülnék ki, vagy elveszik a volume 
 
 Szépítgetések

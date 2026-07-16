@@ -33,12 +33,4 @@ spec:
                 port:
                   number: {{ .Values.grafana.servicePort }}
 
-          - path: /kafka
-            pathType: Prefix
-            backend:
-              service:
-                name: kafka-service
-                port:
-                  number: {{ .Values.kafka.servicePort }}
-
 {{- end }}
