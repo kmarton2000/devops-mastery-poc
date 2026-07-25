@@ -1,4 +1,5 @@
 controller:
+  tag: "lts-jdk17"
 
   admin:
     username: admin

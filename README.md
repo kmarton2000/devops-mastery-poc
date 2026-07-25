@@ -195,3 +195,10 @@ microk8s kubectl get secret grafana \
   -n monitoring \
   -o jsonpath="{.data.admin-password}" | base64 -d
 ```
+
+# ArgoCD-be bekötés:
+
+microk8s kubectl apply -f argocd/jenkins-app.yaml
+application.argoproj.io/jenkins configured
+microk8s kubectl apply -f argocd/grafana-app.yaml
+application.argoproj.io/grafana configured
