@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.com
+spec:
+  project: default
+  sources:
+    # 1. Hivatalos Grafana Helm Chart
+    - repoURL: 'https://grafana.github.io/helm-charts'
+      chart: grafana
+      targetRevision: 8.5.x  # Érdemes pontos verziót vagy verziótartományt megadni
+      helm:
+        valueFiles:
+          - $values/grafana/values.yaml  # Hivatkozás a lentebb definiált Git repóra
+    # 2. A te Git repód, benne a custom values.yaml-lel
+    - repoURL: 'https://github.com/kmarton2000/devops-mastery-poc.git'
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

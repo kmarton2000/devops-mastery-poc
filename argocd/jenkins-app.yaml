@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jenkins
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.com
+spec:
+  project: default
+  sources:
+    # 1. Hivatalos Jenkins Helm Chart
+    - repoURL: 'https://charts.jenkins.io'
+      chart: jenkins
+      targetRevision: 5.8.x  # Válassz egy neked megfelelő chart verziót
+      helm:
+        valueFiles:
+          - $values/jenkins/values.yaml
+    # 2. A te Git repód
+    - repoURL: 'https://github.com/kmarton2000/devops-mastery-poc.git'
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: jenkins
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
