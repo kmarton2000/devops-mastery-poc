@@ -17,7 +17,7 @@ spec:
           - $values/jenkins/values.yaml
     # 2. A te Git repód
     - repoURL: 'https://github.com/kmarton2000/devops-mastery-poc.git'
-      targetRevision: HEAD
+      targetRevision: feature/setup
       ref: values
   destination:
     server: 'https://kubernetes.default.svc'

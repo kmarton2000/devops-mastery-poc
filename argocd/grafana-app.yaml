@@ -17,7 +17,7 @@ spec:
           - $values/grafana/values.yaml  # Hivatkozás a lentebb definiált Git repóra
     # 2. A te Git repód, benne a custom values.yaml-lel
     - repoURL: 'https://github.com/kmarton2000/devops-mastery-poc.git'
-      targetRevision: HEAD
+      targetRevision: feature/setup
       ref: values
   destination:
     server: 'https://kubernetes.default.svc'
