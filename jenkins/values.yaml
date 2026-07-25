@@ -1,0 +1,50 @@
+controller:
+
+  admin:
+    username: admin
+    password: heyjoe
+
+  installPlugins:
+    - kubernetes
+    - workflow-aggregator
+    - git
+    - configuration-as-code
+    - docker-workflow
+    - job-dsl
+
+  JCasC:
+    enabled: true
+
+    configScripts:
+
+      security: |
+        jenkins:
+          securityRealm:
+            local:
+              allowsSignup: false
+              users:
+                - id: admin
+                  password: heyjoe
+
+          authorizationStrategy:
+            loggedInUsersCanDoAnything:
+              allowAnonymousRead: false
+
+additionalAgents:
+
+  maven:
+    podName: jenkins-agent-maven
+    customJenkinsLabels: maven
+    image:
+      repository: jenkins/inbound-agent
+      tag: latest
+
+  python:
+    podName: jenkins-agent-python
+    customJenkinsLabels: python
+    image:
+      repository: python
+      tag: "3.11"
+    command: "/bin/sh -c"
+    args: cat
+    TTYEnabled: true

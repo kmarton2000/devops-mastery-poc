@@ -1,0 +1,18 @@
+service:
+  type: ClusterIP
+
+persistence:
+  enabled: true
+  type: pvc
+  storageClassName: microk8s-hostpath
+  accessModes:
+    - ReadWriteOnce
+  size: 5Gi
+
+adminUser: admin
+
+ingress:
+  enabled: true
+  ingressClassName: public
+  hosts:
+    - grafana.local

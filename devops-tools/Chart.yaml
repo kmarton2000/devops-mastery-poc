@@ -1,6 +1,0 @@
-apiVersion: v2
-name: devops-suite
-description: Minimális Jenkins, Grafana, ArgoCD, Kafka környezet egyetlen chartban
-type: application
-version: 1.0.0
-appVersion: "2026.1"
