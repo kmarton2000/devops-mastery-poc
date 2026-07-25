@@ -10,9 +10,3 @@ persistence:
   size: 5Gi
 
 adminUser: admin
-
-ingress:
-  enabled: true
-  ingressClassName: public
-  hosts:
-    - grafana.local
