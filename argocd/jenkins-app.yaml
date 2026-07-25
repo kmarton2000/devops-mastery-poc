@@ -11,7 +11,7 @@ spec:
     # 1. Hivatalos Jenkins Helm Chart
     - repoURL: 'https://charts.jenkins.io'
       chart: jenkins
-      targetRevision: 5.8.x  # Válassz egy neked megfelelő chart verziót
+      targetRevision: 5.8.0  # Válassz egy neked megfelelő chart verziót
       helm:
         valueFiles:
           - $values/jenkins/values.yaml

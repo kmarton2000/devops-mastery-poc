@@ -11,7 +11,7 @@ spec:
     # 1. Hivatalos Grafana Helm Chart
     - repoURL: 'https://grafana.github.io/helm-charts'
       chart: grafana
-      targetRevision: 8.5.x  # Érdemes pontos verziót vagy verziótartományt megadni
+      targetRevision: 8.5.0  # Érdemes pontos verziót vagy verziótartományt megadni
       helm:
         valueFiles:
           - $values/grafana/values.yaml  # Hivatkozás a lentebb definiált Git repóra
