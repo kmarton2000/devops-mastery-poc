@@ -54,6 +54,15 @@ controller:
                         workingDir: "/home/jenkins/agent"
                         command: "cat"
                         ttyEnabled: true
+                  - name: "git-agent"
+                    label: "git-agent"
+                    nodeUsageMode: "EXCLUSIVE"
+                    containers:
+                      - name: "git"
+                        image: "alpine/git:latest"
+                        workingDir: "/home/jenkins/agent"
+                        command: "cat"
+                        ttyEnabled: true
 
 rbac:
   create: true
