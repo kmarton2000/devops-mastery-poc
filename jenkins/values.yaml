@@ -44,6 +44,16 @@ controller:
                 jenkinsTunnel: "jenkins-agent.jenkins.svc.cluster.local:50000"
                 containerCapStr: "10"
                 retentionTimeout: 10
+                templates:
+                  - name: "node-agent"
+                    label: "node-agent"
+                    nodeUsageMode: "EXCLUSIVE"
+                    containers:
+                      - name: "node"
+                        image: "node:20-alpine"
+                        workingDir: "/home/jenkins/agent"
+                        command: "cat"
+                        ttyEnabled: true
 
 rbac:
   create: true
