@@ -1,7 +1,7 @@
 controller:
   image:
     repository: "jenkins/jenkins"
-    tag: "lts-jdk21" # A legújabb stabil LTS image JDK 21-gyel
+    tag: "lts-jdk21"
 
   admin:
     username: admin
@@ -17,7 +17,7 @@ controller:
 
   JCasC:
     enabled: true
-    defaultConfig: false # Kikapcsoljuk a régi/elavult gyári scripteket
+    defaultConfig: false
 
     configScripts:
       security: |
@@ -35,6 +35,16 @@ controller:
             loggedInUsersCanDoAnything:
               allowAnonymousRead: false
 
+      clouds: |
+        jenkins:
+          clouds:
+            - kubernetes:
+                name: "kubernetes"
+                jenkinsUrl: "http://jenkins.jenkins.svc.cluster.local:8080"
+                jenkinsTunnel: "jenkins-agent.jenkins.svc.cluster.local:50000"
+                containerCapStr: "10"
+                retentionTimeout: 10
+
 rbac:
   create: true
 
@@ -42,20 +52,20 @@ serviceAccount:
   create: true
   name: jenkins
 
-additionalAgents:
-  maven:
-    podName: jenkins-agent-maven
-    customJenkinsLabels: maven
-    image:
-      repository: jenkins/inbound-agent
-      tag: latest
+# additionalAgents:
+#   maven:
+#     podName: jenkins-agent-maven
+#     customJenkinsLabels: maven
+#     image:
+#       repository: jenkins/inbound-agent
+#       tag: latest
 
-  python:
-    podName: jenkins-agent-python
-    customJenkinsLabels: python
-    image:
-      repository: python
-      tag: "3.11"
-    command: "/bin/sh -c"
-    args: cat
-    TTYEnabled: true
+#   python:
+#     podName: jenkins-agent-python
+#     customJenkinsLabels: python
+#     image:
+#       repository: python
+#       tag: "3.11"
+#     command: "/bin/sh -c"
+#     args: cat
+#     TTYEnabled: true
