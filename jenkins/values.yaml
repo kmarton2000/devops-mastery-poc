@@ -63,20 +63,24 @@ controller:
                         workingDir: "/home/jenkins/agent"
                         command: "cat"
                         ttyEnabled: true
-                  - name: "node-builder-agent"
-                    label: "node-builder-agent"
+                  - name: "custom-base-agent"
+                    label: "custom-base-agent"
+                    nodeUsageMode: "EXCLUSIVE"
                     containers:
-                    - name: "node-builder"
-                      image: "kmarton20002/jenkins-node-builder:latest"
-                      command: "cat"
-                      ttyEnabled: true
-                  - name: "gitops-deploy-agent"
-                    label: "gitops-deploy-agent"
+                      - name: "base"
+                        image: "kmarton20002/jenkins-base-agent:latest"
+                        workingDir: "/home/jenkins/agent"
+                        command: "cat"
+                        ttyEnabled: true
+                  - name: "custom-node-builder"
+                    label: "custom-node-builder"
+                    nodeUsageMode: "EXCLUSIVE"
                     containers:
-                    - name: "deployer"
-                      image: "kmarton20002/jenkins-deploy-agent:latest"
-                      command: "cat"
-                      ttyEnabled: true
+                      - name: "node-builder"
+                        image: "kmarton20002/jenkins-node-builder:latest"
+                        workingDir: "/home/jenkins/agent"
+                        command: "cat"
+                        ttyEnabled: true
 
 rbac:
   create: true
