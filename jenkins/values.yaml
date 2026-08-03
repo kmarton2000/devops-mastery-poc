@@ -75,12 +75,21 @@ controller:
                   - name: "custom-node-builder"
                     label: "custom-node-builder"
                     nodeUsageMode: "EXCLUSIVE"
+                    volumes:
+                      - hostPathVolume:
+                          hostPath: "/var/run/docker.sock"
+                          mountPath: "/var/run/docker.sock"
                     containers:
                       - name: "node-builder"
                         image: "kmarton20002/jenkins-node-builder:latest"
                         workingDir: "/home/jenkins/agent"
                         command: "cat"
                         ttyEnabled: true
+                        securityContext:
+                          privileged: true # Szükséges lehet a socket eléréséhez
+                        volumeMounts:
+                          - name: "volume-0"
+                            mountPath: "/var/run/docker.sock"
 
 rbac:
   create: true
