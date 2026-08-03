@@ -1,6 +1,7 @@
 controller:
   image:
-    tag: "lts"
+    repository: "jenkins/jenkins"
+    tag: "lts-jdk21" # A legújabb stabil LTS image JDK 21-gyel
 
   admin:
     username: admin
@@ -16,11 +17,13 @@ controller:
 
   JCasC:
     enabled: true
+    defaultConfig: false # Kikapcsoljuk a régi/elavult gyári scripteket
 
     configScripts:
-
       security: |
         jenkins:
+          crumbIssuer:
+            standard: {}
           securityRealm:
             local:
               allowsSignup: false
@@ -33,7 +36,6 @@ controller:
               allowAnonymousRead: false
 
 additionalAgents:
-
   maven:
     podName: jenkins-agent-maven
     customJenkinsLabels: maven
