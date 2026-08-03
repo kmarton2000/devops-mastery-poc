@@ -63,6 +63,20 @@ controller:
                         workingDir: "/home/jenkins/agent"
                         command: "cat"
                         ttyEnabled: true
+                  - name: "node-builder-agent"
+                    label: "node-builder-agent"
+                    containers:
+                    - name: "node-builder"
+                      image: "kmarton20002/jenkins-node-builder:latest"
+                      command: "cat"
+                      ttyEnabled: true
+                  - name: "gitops-deploy-agent"
+                    label: "gitops-deploy-agent"
+                    containers:
+                    - name: "deployer"
+                      image: "kmarton20002/jenkins-deploy-agent:latest"
+                      command: "cat"
+                      ttyEnabled: true
 
 rbac:
   create: true
