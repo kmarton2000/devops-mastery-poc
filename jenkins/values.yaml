@@ -35,6 +35,13 @@ controller:
             loggedInUsersCanDoAnything:
               allowAnonymousRead: false
 
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  name: jenkins
+
 additionalAgents:
   maven:
     podName: jenkins-agent-maven
