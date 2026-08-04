@@ -8,7 +8,6 @@ controller:
     password: heyjoe
 
   overwritePlugins: true
-
   overwritePluginsFromImage: true
 
   installPlugins:
@@ -89,11 +88,7 @@ controller:
                         workingDir: "/home/jenkins/agent"
                         command: "cat"
                         ttyEnabled: true
-                        securityContext:
-                          privileged: true # Szükséges lehet a socket eléréséhez
-                        volumeMounts:
-                          - name: "volume-0"
-                            mountPath: "/var/run/docker.sock"
+                        privileged: true
 
 rbac:
   create: true
