@@ -98,7 +98,6 @@ controller:
                     containers:
                       - name: "ansible"
                         image: "kmarton20002/jenkins-ansible-agent:latest"
-                        imagePullPolicy: "Always"
                         workingDir: "/home/jenkins/agent"
                         command: "cat"
                         ttyEnabled: true
