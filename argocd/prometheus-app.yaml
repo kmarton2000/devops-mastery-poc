@@ -1,22 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: grafana
+  name: prometheus-stack
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.com
 spec:
   project: default
+  source:
+    repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: kube-prometheus-stack
+    targetRevision: 61.x.x
+    helm:
+      valueFiles:
+        - '$values/prometheus/values.yaml'
   sources:
-    - repoURL: 'https://grafana.github.io/helm-charts'
-      chart: grafana
-      targetRevision: 8.5.0
-      helm:
-        valueFiles:
-          - $values/grafana/values.yaml
     - repoURL: 'https://github.com/kmarton2000/devops-mastery-poc.git'
       targetRevision: feature/setup
       ref: values
+    - repoURL: 'https://prometheus-community.github.io/helm-charts'
+      chart: kube-prometheus-stack
+      targetRevision: 61.x.x
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: monitoring

@@ -1,0 +1,9 @@
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+      - job_name: 'raspberry-pi-zero'
+        scrape_interval: 15s
+        static_configs:
+          - targets: ['raspberrypi:9100']
+            labels:
+              instance: 'raspberry-pi-zero-w'
