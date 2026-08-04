@@ -92,6 +92,15 @@ controller:
                         command: "cat"
                         ttyEnabled: true
                         privileged: true
+                  - name: "custom-ansible-agent"
+                    label: "custom-ansible-agent"
+                    nodeUsageMode: "EXCLUSIVE"
+                    containers:
+                      - name: "ansible"
+                        image: "kmarton20002/jenkins-ansible-agent:latest"
+                        workingDir: "/home/jenkins/agent"
+                        command: "cat"
+                        ttyEnabled: true
 
 rbac:
   create: true
