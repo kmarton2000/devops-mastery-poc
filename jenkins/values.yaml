@@ -102,6 +102,21 @@ controller:
                         workingDir: "/home/jenkins/agent"
                         command: "cat"
                         ttyEnabled: true
+                  - name: "custom-buildx-agent"
+                    label: "custom-buildx-agent"
+                    nodeUsageMode: "EXCLUSIVE"
+                    volumes:
+                      - hostPathVolume:
+                          hostPath: "/var/run/docker.sock"
+                          mountPath: "/var/run/docker.sock"
+                    containers:
+                      - name: "buildx"
+                        image: "kmarton20002/jenkins-buildx-agent:latest"
+                        imagePullPolicy: "Always"
+                        workingDir: "/home/jenkins/agent"
+                        command: "cat"
+                        ttyEnabled: true
+                        privileged: true
 
 rbac:
   create: true
