@@ -115,6 +115,7 @@ controller:
                         command: "cat"
                         ttyEnabled: true
                         privileged: true
+                        runAsUser: 0
 
 rbac:
   create: true
