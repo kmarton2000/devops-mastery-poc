@@ -112,7 +112,6 @@ controller:
                     containers:
                       - name: "buildx"
                         image: "kmarton20002/jenkins-buildx-agent:latest"
-                        alwaysPullImage: true
                         workingDir: "/home/jenkins/agent"
                         command: "cat"
                         ttyEnabled: true
