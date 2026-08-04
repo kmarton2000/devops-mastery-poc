@@ -7,6 +7,10 @@ controller:
     username: admin
     password: heyjoe
 
+  overwritePlugins: true
+
+  overwritePluginsFromImage: true
+
   installPlugins:
     - kubernetes
     - workflow-aggregator
@@ -97,21 +101,3 @@ rbac:
 serviceAccount:
   create: true
   name: jenkins
-
-# additionalAgents:
-#   maven:
-#     podName: jenkins-agent-maven
-#     customJenkinsLabels: maven
-#     image:
-#       repository: jenkins/inbound-agent
-#       tag: latest
-
-#   python:
-#     podName: jenkins-agent-python
-#     customJenkinsLabels: python
-#     image:
-#       repository: python
-#       tag: "3.11"
-#     command: "/bin/sh -c"
-#     args: cat
-#     TTYEnabled: true
