@@ -17,6 +17,9 @@ controller:
     - configuration-as-code
     - docker-workflow
     - job-dsl
+    - pipeline-stage-view
+    - blueocean
+    - matrix-auth
 
   JCasC:
     enabled: true
