@@ -10,6 +10,16 @@ controller:
   overwritePlugins: true
   overwritePluginsFromImage: true
 
+  initializeOnce: false
+    
+  sidecars:
+    configAutoReload:
+      enabled: true
+
+  containerEnv:
+    - name: OVERWRITE_PLUGINS
+      value: "true"
+
   installPlugins:
     - kubernetes
     - workflow-aggregator
