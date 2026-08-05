@@ -1,13 +1,8 @@
-# prometheus/values.yaml
-
 server:
   persistentVolume:
-    enabled: false # Ha nem akarsz persistent volume-ot teszteléshez, állítsd false-ra
-  
-  global:
-    scrape_interval: 15s
+    enabled: false
 
-extraScrapeConfigs: |
+extraScrapeConfigs:
   - job_name: 'raspberry-pi-zero'
     scrape_interval: 15s
     static_configs:
@@ -15,12 +10,8 @@ extraScrapeConfigs: |
         labels:
           instance: 'raspberry-pi-zero-w'
 
-# Kikapcsoljuk azokat a komponenseket, amikre most nincs szükséged
 alertmanager:
   enabled: false
 
 pushgateway:
   enabled: false
-
-nodeExporter:
-  enabled: false # A cluster-en belüli node exporter (a Pi-n úgyis natívan fut a binary)
