@@ -2,7 +2,7 @@ server:
   persistentVolume:
     enabled: false
 
-extraScrapeConfigs: |
+scrapeConfigs: 
   - job_name: 'raspberry-pi-zero'
     scrape_interval: 15s
     static_configs:
