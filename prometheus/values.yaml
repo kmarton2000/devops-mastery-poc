@@ -1,6 +1,10 @@
 crds:
   enabled: false
 
+prometheus-operator:
+  crds:
+    enabled: false
+
 prometheus:
   prometheusSpec:
     additionalScrapeConfigs:
