@@ -28,6 +28,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true     # <-- Ez megszünteti a 256KB-os annotáció korlátot!
-      - Replace=true             # <-- Szükség esetén felülírja a CRD-ket
+      - ServerSideApply=true
       - SkipDryRunOnMissingResource=true
