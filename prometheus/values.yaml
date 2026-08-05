@@ -1,37 +1,26 @@
-crds:
+# prometheus/values.yaml
+
+server:
+  persistentVolume:
+    enabled: false # Ha nem akarsz persistent volume-ot teszteléshez, állítsd false-ra
+  
+  global:
+    scrape_interval: 15s
+
+extraScrapeConfigs: |
+  - job_name: 'raspberry-pi-zero'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['192.168.1.96:9100']
+        labels:
+          instance: 'raspberry-pi-zero-w'
+
+# Kikapcsoljuk azokat a komponenseket, amikre most nincs szükséged
+alertmanager:
   enabled: false
 
-prometheus-operator:
-  crds:
-    enabled: false
+pushgateway:
+  enabled: false
 
-prometheus:
-  prometheusSpec:
-    additionalScrapeConfigs:
-      - job_name: 'raspberry-pi-zero'
-        scrape_interval: 15s
-        static_configs:
-          - targets: ['<RASPBERRY_PI_IP>:9100'] # Írd be a Pi Zero IP címét!
-            labels:
-              instance: 'raspberry-pi-zero-w'
-
-grafana:
-  dashboardProviders:
-    dashboardproviders.yaml:
-      apiVersion: 1
-      providers:
-        - name: 'default'
-          orgId: 1
-          folder: ''
-          type: file
-          disableDeletion: false
-          editable: true
-          options:
-            path: /var/lib/grafana/dashboards/default
-  dashboards:
-    default:
-      node-exporter-full:
-        # A hivatalos 1860-as dashboard importálása a Grafana gcom-ról:
-        gnetId: 1860
-        revision: 37
-        datasource: Prometheus
+nodeExporter:
+  enabled: false # A cluster-en belüli node exporter (a Pi-n úgyis natívan fut a binary)

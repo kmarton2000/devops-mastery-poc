@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus-stack
+  name: prometheus-simple
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: 'https://prometheus-community.github.io/helm-charts'
-    chart: kube-prometheus-stack
-    targetRevision: 61.x.x
+    chart: prometheus
+    targetRevision: 25.x.x
     helm:
       valueFiles:
         - '$values/prometheus/values.yaml'
@@ -17,8 +17,8 @@ spec:
       targetRevision: feature/setup
       ref: values
     - repoURL: 'https://prometheus-community.github.io/helm-charts'
-      chart: kube-prometheus-stack
-      targetRevision: 61.x.x
+      chart: prometheus
+      targetRevision: 25.x.x
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: monitoring
@@ -28,5 +28,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true
-      - SkipDryRunOnMissingResource=true
