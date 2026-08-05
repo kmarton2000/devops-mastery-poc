@@ -1,9 +1,33 @@
+crds:
+  enabled: false
+
 prometheus:
   prometheusSpec:
     additionalScrapeConfigs:
       - job_name: 'raspberry-pi-zero'
         scrape_interval: 15s
         static_configs:
-          - targets: ['raspberrypi:9100']
+          - targets: ['<RASPBERRY_PI_IP>:9100'] # Írd be a Pi Zero IP címét!
             labels:
               instance: 'raspberry-pi-zero-w'
+
+grafana:
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+  dashboards:
+    default:
+      node-exporter-full:
+        # A hivatalos 1860-as dashboard importálása a Grafana gcom-ról:
+        gnetId: 1860
+        revision: 37
+        datasource: Prometheus
