@@ -2,16 +2,12 @@ server:
   persistentVolume:
     enabled: false
 
-scrapeConfigs: 
+# Ha a chart közvetlenül átadja a Prometheus config szekcióit:
+extraScrapeConfigs:
   - job_name: 'raspberry-pi-zero'
     scrape_interval: 15s
     static_configs:
-      - targets: ['192.168.1.96:9100']
+      - targets:
+          - '192.168.1.96:9100'
         labels:
           instance: 'raspberry-pi-zero-w'
-
-alertmanager:
-  enabled: false
-
-pushgateway:
-  enabled: false
